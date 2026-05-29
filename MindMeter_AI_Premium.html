@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MindMeter AI Premium</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{margin:0;font-family:Arial;background:#eef2ff}
+header{background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:40px;text-align:center}
+.container{max-width:1000px;margin:auto;padding:20px}
+.card{background:white;border-radius:20px;padding:20px;margin:15px 0;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+input,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
+button{padding:14px 20px;border:none;border-radius:12px;background:#2563eb;color:white;font-size:16px;cursor:pointer}
+#result{display:none}
+canvas{max-width:100%}
+</style>
+</head>
+<body>
+<header>
+<h1>MindMeter AI Premium</h1>
+<p>Life, Stress & Wellbeing Assessment</p>
+</header>
+
+<div class="container">
+<div class="card">
+<h2>Assessment</h2>
+<input id="name" placeholder="Your Name">
+
+<select id="employment">
+<option>Employed</option>
+<option>Self Employed</option>
+<option>Student</option>
+<option>Unemployed</option>
+</select>
+
+<select id="income">
+<option>Above ₹50,000</option>
+<option>₹10,000-₹50,000</option>
+<option>Below ₹10,000</option>
+<option>No Income</option>
+</select>
+
+<select id="parents">
+<option>Always talk to parents</option>
+<option>Sometimes</option>
+<option>Rarely</option>
+<option>Never</option>
+</select>
+
+<select id="friend">
+<option>Have trusted person</option>
+<option>No trusted person</option>
+</select>
+
+<select id="stress">
+<option>Rarely stressed</option>
+<option>Sometimes stressed</option>
+<option>Often stressed</option>
+<option>Daily stressed</option>
+</select>
+
+<button onclick="analyze()">Analyze My Life</button>
+</div>
+
+<div id="result" class="card">
+<h2 id="title"></h2>
+<h3 id="score"></h3>
+<p id="advice"></p>
+
+<canvas id="barChart"></canvas>
+
+<h3>Emergency Support (India)</h3>
+<p>Emergency: 112<br>Ambulance: 108<br>Child Helpline: 1098</p>
+</div>
+</div>
+
+<script>
+function analyze(){
+let s=0;
+if(employment.value==='Unemployed')s+=25;
+if(income.value==='No Income')s+=25;
+if(income.value==='Below ₹10,000')s+=15;
+if(parents.value==='Never')s+=20;
+if(parents.value==='Rarely')s+=10;
+if(friend.value==='No trusted person')s+=20;
+if(stress.value==='Often stressed')s+=15;
+if(stress.value==='Daily stressed')s+=30;
+
+let level='Low';
+let advice='Keep maintaining healthy habits.';
+if(s>25){level='Moderate';advice='Focus on sleep, exercise and support networks.';}
+if(s>50){level='High';advice='Consider stress management strategies and seek support.';}
+if(s>75){level='Very High';advice='Talk to trusted people and consider professional help.';}
+
+document.getElementById('result').style.display='block';
+title.innerHTML=(name.value||'User') + ' - ' + level + ' Stress Risk';
+score.innerHTML='Stress Score: '+s+'/100';
+document.getElementById('advice').innerHTML=advice;
+
+new Chart(document.getElementById('barChart'),{
+type:'bar',
+data:{
+labels:['Career','Finance','Family','Social'],
+datasets:[{data:[Math.min(s,100),Math.min(s+10,100),Math.max(10,s-20),Math.max(15,s-10)]}]
+}
+});
+}
+</script>
+</body>
+</html>
