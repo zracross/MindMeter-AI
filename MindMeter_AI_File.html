@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindMeter AI</title>
+<style>
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#2563eb,#7c3aed);margin:0;padding:20px}
+.card{max-width:900px;margin:auto;background:white;border-radius:20px;padding:25px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+h1{text-align:center}
+.q{margin:15px 0;padding:12px;background:#f5f5f5;border-radius:10px}
+button{padding:12px 20px;border:none;border-radius:10px;background:#2563eb;color:#fff}
+#result{display:none;margin-top:20px;padding:15px;background:#eef}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>MindMeter AI</h1>
+<p>Answer Yes or No to each question.</p>
+
+<div id="questions"></div>
+
+<button onclick="analyze()">Analyze</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+const questions=[
+"Do you often feel mentally exhausted?",
+"Do you worry about your future?",
+"Do financial problems cause stress?",
+"Do you feel lonely frequently?",
+"Do you struggle to sleep well?",
+"Do you feel unsupported by family?",
+"Do you overthink daily situations?",
+"Do you feel overwhelmed by responsibilities?",
+"Do you lack a trusted friend?",
+"Do you feel unhappy with your career or studies?",
+"Do you compare yourself negatively to others?",
+"Do you often feel anxious?",
+"Do you feel your life is stuck?",
+"Do you avoid social situations?",
+"Do you feel emotionally drained?",
+"Do you have difficulty concentrating?",
+"Do you feel hopeless about the future?",
+"Do money worries affect your sleep?",
+"Do you rarely take time to relax?",
+"Do you think stress affects your health?"
+];
+
+const qDiv=document.getElementById('questions');
+questions.forEach((q,i)=>{
+qDiv.innerHTML+=`<div class="q"><b>${i+1}. ${q}</b><br>
+<label><input type="radio" name="q${i}" value="yes"> Yes</label>
+<label><input type="radio" name="q${i}" value="no"> No</label></div>`;
+});
+
+function analyze(){
+let score=0;
+for(let i=0;i<questions.length;i++){
+let a=document.querySelector('input[name="q'+i+'"]:checked');
+if(a && a.value==="yes") score+=5;
+}
+let level="Low";
+if(score>30) level="Moderate";
+if(score>60) level="High";
+if(score>80) level="Very High";
+
+document.getElementById('result').style.display='block';
+document.getElementById('result').innerHTML=`
+<h2>Stress Score: ${score}/100</h2>
+<h2>${level} Stress Risk</h2>
+<p>Advice: Maintain healthy sleep, exercise regularly, talk with trusted people, and seek professional support if stress becomes overwhelming.</p>
+<h3>Emergency Numbers (India)</h3>
+<p>112 Emergency<br>108 Ambulance<br>1098 Child Helpline</p>`;
+}
+</script>
+</body>
+</html>
